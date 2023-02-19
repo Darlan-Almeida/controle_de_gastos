@@ -1,0 +1,20 @@
+CRIAÇÃO DAS TABELAS NECESSÁRIAS NA INTEGRAÇÃO DO SISTEMA:
+
+
+Create table buyparceled ( id int auto_increment primary key , product varchar(150) 
+, message varchar(150) , price float (10 , 2) , store varchar (150) , category varchar(150) 
+, duration varchar (150), payment int , date date , quantity int , paidinstallment int  , moneypaid float (10 , 2));
+
+
+
+create table extract ( bankroll float (10 , 2 ) , date date , id int primary key);
+
+
+
+create table moneyscheduled ( money float(10,2) , day int , month int );
+
+
+
+
+Create table purchases ( id int auto_increment primary key , product varchar(150) , message varchar(150) , price float (10 , 2)
+ , store varchar (150) , category varchar(150) , duration varchar (150), payment int , date date , quantity int);
