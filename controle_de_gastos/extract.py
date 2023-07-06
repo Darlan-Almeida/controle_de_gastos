@@ -1,20 +1,17 @@
-import mysql.connector
+import pg8000
+from models.config import DB_CONFIG
 
 
 class Extract():
 
     def read_database():
 
-      connection = mysql.connector.connect(
-      host="localhost",
-      user="root",
-      password="12345",
-      database="spendingcontrol"
-    )
+      connection = pg8000.connect(**DB_CONFIG)
+
 
       cursor = connection.cursor()
 
-      sql = "SELECT bankroll FROM extract2 LIMIT 1"
+      sql = "SELECT bankroll FROM extract LIMIT 1"
 
       cursor.execute(sql)
       results = cursor.fetchall()
@@ -30,17 +27,12 @@ class Extract():
     def update_money():
         money = float(input("digite o valor que você deseja adicionar na carteira: "))
         update_bankroll = money + Extract.read_database()
-        connection = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="12345",
-        database="spendingcontrol"
-        )
+        connection = pg8000.connect(**DB_CONFIG)
 
         cursor = connection.cursor()
 
-        sql = "UPDATE extract2 SET bankroll = %s  WHERE id = %s"
-        data = (update_bankroll , 0)
+        sql = "UPDATE extract SET bankroll = %s  WHERE id = %s"
+        data = (update_bankroll , 1)
 
         cursor.execute(sql, data)
         connection.commit()
@@ -53,20 +45,15 @@ class Extract():
         
     def cashout():
         money = float(input("digite o valor que você deseja sacar da carteira: "))
-        cashout_bankroll =  Extract.read_database() - money
+        cashout_bankroll =  float(Extract.read_database()) - money
 
 
-        connection = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="12345",
-        database="spendingcontrol"
-        )
+        connection = pg8000.connect(**DB_CONFIG)
 
         cursor = connection.cursor()
 
-        sql = "UPDATE extract2 SET bankroll = %s  WHERE id = %s"
-        data = (cashout_bankroll , 0)
+        sql = "UPDATE extract SET bankroll = %s  WHERE id = %s"
+        data = (cashout_bankroll , 1)
 
         cursor.execute(sql, data)
         connection.commit()
@@ -79,12 +66,7 @@ class Extract():
 
     def add_money_scheduled(money):
       
-        connection = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="12345",
-        database="spendingcontrol"
-        )
+        connection = pg8000.connect(**DB_CONFIG)
 
         cursor = connection.cursor()
 
