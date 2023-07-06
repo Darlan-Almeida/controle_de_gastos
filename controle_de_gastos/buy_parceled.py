@@ -1,4 +1,5 @@
-import mysql.connector
+import pg8000
+from models.config import DB_CONFIG
 from datetime import date , datetime
 from purchases import Purchases
 
@@ -18,14 +19,9 @@ class Buy_parceled(Purchases):
       paidinstallment = 0 
       moneypaid = 0
       if(payment > 0):
-        connection = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="12345",
-        database="spendingcontrol"
-        )
+        connection = pg8000.connect(**DB_CONFIG)
         cursor = connection.cursor()
-        sql = "INSERT INTO buyparceled2 (product, message, price , store , category , duration , date , quantity, payment , paidinstallment, moneypaid) VALUES (%s, %s, %s , %s, %s, %s , %s, %s, %s, %s, %s )"
+        sql = "INSERT INTO buyparceled (product, message, price , store , category , duration , date , quantity, payment , paidinstallment, moneypaid) VALUES (%s, %s, %s , %s, %s, %s , %s, %s, %s, %s, %s )"
         data = (product, message, price , store , category , duration , date , quantity, payment , paidinstallment, moneypaid)
 
         cursor.execute(sql, data)
@@ -42,16 +38,11 @@ class Buy_parceled(Purchases):
         print("Essa compra não tem parcela")
 
     def read_buy_parceled():
-      connection = mysql.connector.connect(
-      host="localhost",
-      user="root",
-      password="12345",
-      database="spendingcontrol"
-    )
+      connection = pg8000.connect(**DB_CONFIG)
 
       cursor = connection.cursor()
 
-      sql = "SELECT * FROM buyparceled2 WHERE payment > 0;"
+      sql = "SELECT * FROM buyparceled WHERE payment > 0;"
 
       cursor.execute(sql)
       results = cursor.fetchall()
@@ -65,16 +56,11 @@ class Buy_parceled(Purchases):
       return results
   
     def count_register_parceled():
-      connection = mysql.connector.connect(
-      host="localhost",
-      user="root",
-      password="12345",
-      database="spendingcontrol"
-    )
+      connection = pg8000.connect(**DB_CONFIG)
 
       cursor = connection.cursor()
 
-      sql = "SELECT COUNT(id) FROM buyparceled2"
+      sql = "SELECT COUNT(id) FROM buyparceled"
 
       cursor.execute(sql)
       results = cursor.fetchall()
@@ -91,16 +77,11 @@ class Buy_parceled(Purchases):
           moneypaid = buy_parceled[i][11] + (buy_parceled[i][3] / buy_parceled[i][7])
           paidinstallment = (buy_parceled[i][10] + 1)
           id = buy_parceled[i][0]
-          connection = mysql.connector.connect(
-          host="localhost",
-          user="root",
-          password="12345",
-          database="spendingcontrol"
-          )
+          connection = pg8000.connect(**DB_CONFIG)
     
           cursor = connection.cursor()
                 
-          sql = "UPDATE buyparceled2 SET moneypaid = %s , paidinstallment  = %s WHERE id = %s"
+          sql = "UPDATE buyparceled SET moneypaid = %s , paidinstallment  = %s WHERE id = %s"
           data = (  moneypaid, paidinstallment ,  id)
 
           cursor.execute(sql , data)
@@ -112,16 +93,11 @@ class Buy_parceled(Purchases):
   
 
     def sum_money_parceled():
-      connection = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="12345",
-        database="spendingcontrol"
-      )
+      connection = pg8000.connect(**DB_CONFIG)
 
       cursor = connection.cursor()
 
-      sql = "SELECT SUM(moneypaid) AS TotalItemsOrdered FROM buyparceled2"
+      sql = "SELECT SUM(moneypaid) AS TotalItemsOrdered FROM buyparceled"
       cursor.execute(sql)
 
       results = cursor.fetchall()
@@ -134,19 +110,14 @@ class Buy_parceled(Purchases):
 
 
     def delete_buy_parceled():
-      connection = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="12345",
-        database="spendingcontrol"
-      )
+      connection = pg8000.connect(**DB_CONFIG)
 
       cursor = connection.cursor()
 
 
       # Onde as parcelas pagas for igual ao total, exclua esse registro, pois todas as parcelas foram pagas
 
-      sql = "DELETE FROM buyparceled2 WHERE paidinstallment = payment"
+      sql = "DELETE FROM buyparceled WHERE paidinstallment = payment"
 
       cursor.execute(sql)
       connection.commit()
