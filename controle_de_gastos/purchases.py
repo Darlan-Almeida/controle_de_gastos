@@ -1,4 +1,5 @@
-import mysql.connector 
+import pg8000
+from models.config import DB_CONFIG
 from datetime import date , datetime
 
 class Purchases():
@@ -25,38 +26,27 @@ class Purchases():
       duration = input("duração do produto: ")
       date = datetime.now()
 
-      connection = mysql.connector.connect(
-      host="localhost",
-      user="root",
-      password="12345",
-      database="spendingcontrol"
-    )
+      connection = pg8000.connect(**DB_CONFIG)
       cursor = connection.cursor()
-      sql = "INSERT INTO purchases2 (product, message, price , store , category , duration, date , quantity) VALUES (%s, %s, %s , %s, %s, %s , %s, %s )"
+      sql = "INSERT INTO purchases (product, message, price , store , category , duration, date , quantity) VALUES (%s, %s, %s , %s, %s, %s , %s, %s )"
       data = (product, message, price , store , category , duration, date, quantity)
 
       cursor.execute(sql, data)
       connection.commit()
 
-      userid = cursor.lastrowid
-
       cursor.close()
       connection.close()
 
-      print("Foi cadastrado o novo produto de ID:", userid)
+      print("Foi cadastrado o novo produto de ID:")
 
     def read_database():
 
-      connection = mysql.connector.connect(
-      host="localhost",
-      user="root",
-      password="12345",
-      database="spendingcontrol"
-    )
+      connection = connection = pg8000.connect(**DB_CONFIG)
+
 
       cursor = connection.cursor()
 
-      sql = "SELECT * FROM purchases2"
+      sql = "SELECT * FROM purchases"
 
       cursor.execute(sql)
       results = cursor.fetchall()
@@ -65,7 +55,7 @@ class Purchases():
       connection.close()
 
       for result in results:
-        print("produto: {0} | descrição: {1}  | preço: {2} | loja: {3} | categoria: {4} | duração: {5} |  data: {6} | quantidade: {7} | id: {8}".format(result[0], result[1], result[2], result[3], result[4], result[5], result[6], result[7], result[8]))
+        print("id: {0} | produto: {1}  | descrição: {2} | preço: {3} | loja: {4} | categoria: {5} |  Duração: {6} | quantidade: {7} |  data: {8}".format(result[0], result[1], result[2], result[3], result[4], result[5], result[6], result[7], result[8]))
 
     def update_database():
       id = int(input("digite o ID do produto quue deseja atualizar: "))
@@ -78,16 +68,11 @@ class Purchases():
       duration = input("duração do produto: ")
       date = datetime.now()
 
-      connection = mysql.connector.connect(
-      host="localhost",
-      user="root",
-      password="12345",
-      database="spendingcontrol"
-    )
+      connection = pg8000.connect(**DB_CONFIG)
 
       cursor = connection.cursor()
 
-      sql = "UPDATE purchases2 SET product = %s , message = %s , price= %s , store= %s, category = %s , duration = %s  , date= %s , quantity = %s WHERE id = %s"
+      sql = "UPDATE purchases SET product = %s , message = %s , price= %s , store= %s, category = %s , duration = %s  , date= %s , quantity = %s WHERE id = %s"
       data = (product, message, price , store , category , duration, date, quantity, id)
 
       cursor.execute(sql, data)
@@ -104,16 +89,11 @@ class Purchases():
     def delete_database():
         id = int(input("digite o ID do produto que deseja excluir: "))
 
-        connection = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="12345",
-        database="spendingcontrol"
-      )
+        connection = pg8000.connect(**DB_CONFIG)
 
         cursor = connection.cursor()
 
-        sql = "DELETE FROM purchases2 WHERE id = %s"
+        sql = "DELETE FROM purchases WHERE id = %s"
         data = (id,)
         cursor.execute(sql, data)
         connection.commit()
@@ -127,16 +107,11 @@ class Purchases():
 
     def sum_price():
       #SELECT SUM(Quantity) AS TotalItemsOrdered FROM OrderDetails;
-      connection = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="12345",
-        database="spendingcontrol"
-      )
+      connection = pg8000.connect(**DB_CONFIG)
 
       cursor = connection.cursor()
 
-      sql = "SELECT SUM(price) AS TotalItemsOrdered FROM purchases2"
+      sql = "SELECT SUM(price) AS TotalItemsOrdered FROM purchases"
       cursor.execute(sql)
 
       results = cursor.fetchall()
