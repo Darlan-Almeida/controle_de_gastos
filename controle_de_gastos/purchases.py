@@ -1,6 +1,5 @@
 import pg8000
 from models.config import DB_CONFIG
-from datetime import date , datetime
 
 class Purchases():
     def __init__(self, product, message, price , store , category , duration , date, quantity):
@@ -16,16 +15,7 @@ class Purchases():
 
 
   
-    def insert_database():
-      product = input("Produto: ")
-      quantity = int(input("quantidade: "))
-      message = input("descrição: ")
-      price = (float(input("preço unitário: ")) * quantity)
-      store = input("loja: ")
-      category = input("categoria: ")
-      duration = input("duração do produto: ")
-      date = datetime.now()
-
+    def insert_database(product, message, price , store , category , duration , date, quantity):
       connection = pg8000.connect(**DB_CONFIG)
       cursor = connection.cursor()
       sql = "INSERT INTO purchases (product, message, price , store , category , duration, date , quantity) VALUES (%s, %s, %s , %s, %s, %s , %s, %s )"
@@ -37,7 +27,7 @@ class Purchases():
       cursor.close()
       connection.close()
 
-      print("Foi cadastrado o novo produto de ID:")
+      return("Foi cadastrado o novo produto de ID:")
 
     def read_database():
 
@@ -57,17 +47,7 @@ class Purchases():
       for result in results:
         print("id: {0} | produto: {1}  | descrição: {2} | preço: {3} | loja: {4} | categoria: {5} |  Duração: {6} | quantidade: {7} |  data: {8}".format(result[0], result[1], result[2], result[3], result[4], result[5], result[6], result[7], result[8]))
 
-    def update_database():
-      id = int(input("digite o ID do produto quue deseja atualizar: "))
-      product = input("Produto: ")
-      quantity = int(input("quantidade: "))
-      message = input("descrição: ")
-      price = float(input("preço: ")) * quantity
-      store = input("loja: ")
-      category = input("categoria: ")
-      duration = input("duração do produto: ")
-      date = datetime.now()
-
+    def update_database(id , product , quantity , message , price , store , category , duration ,date):
       connection = pg8000.connect(**DB_CONFIG)
 
       cursor = connection.cursor()
@@ -86,9 +66,7 @@ class Purchases():
       print(recordsaffected, " registros alterados")
 
 
-    def delete_database():
-        id = int(input("digite o ID do produto que deseja excluir: "))
-
+    def delete_database(id):
         connection = pg8000.connect(**DB_CONFIG)
 
         cursor = connection.cursor()

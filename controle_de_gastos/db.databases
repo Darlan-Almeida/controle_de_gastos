@@ -17,4 +17,49 @@ create table moneyscheduled ( money float(10,2) , day int , month int );
 
 
 Create table purchases ( id int auto_increment primary key , product varchar(150) , message varchar(150) , price float (10 , 2)
- , store varchar (150) , category varchar(150) , duration varchar (150), payment int , date date , quantity int);
+ , store varchar (150) , category varchar(150) , duration varchar (150), payment int , date date , quantity int);]
+
+
+
+
+ Para PostgrreSql
+
+ CREATE TABLE buyparceled (
+    id serial PRIMARY KEY,
+    product VARCHAR(150),
+    message VARCHAR(150),
+    price NUMERIC(10, 2),
+    store VARCHAR(150),
+    category VARCHAR(150),
+    duration VARCHAR(150),
+    payment INT,
+    date DATE,
+    quantity INT,
+    paidinstallment INT,
+    moneypaid NUMERIC(10, 2)
+);
+
+CREATE TABLE extract (
+    bankroll FLOAT,
+    date DATE,
+    id serial PRIMARY KEY
+);
+
+CREATE TABLE moneyscheduled (
+    money FLOAT,
+    day INT,
+    month INT
+);
+
+CREATE TABLE purchases (
+    id serial PRIMARY KEY,
+    product VARCHAR(150),
+    message VARCHAR(150),
+    price FLOAT,
+    store VARCHAR(150),
+    category VARCHAR(150),
+    duration VARCHAR(150),
+    payment INT,
+    date DATE,
+    quantity INT
+);

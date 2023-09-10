@@ -42,13 +42,32 @@ while True:
 
 
     if(menu == 1):
-        Purchases.insert_database()
+        product = input("Produto: ")
+        quantity = int(input("quantidade: "))
+        message = input("descrição: ")
+        price = (float(input("preço unitário: ")) * quantity)
+        store = input("loja: ")
+        category = input("categoria: ")
+        duration = input("duração do produto: ")
+        date = datetime.now()
+        print(Purchases.insert_database(product, message, price , store , category , duration , date, quantity))
 
     if(menu == 2):
-        Purchases.update_database()
+      id = int(input("digite o ID do produto quue deseja atualizar: "))
+      product = input("Produto: ")
+      quantity = int(input("quantidade: "))
+      message = input("descrição: ")
+      price = float(input("preço: ")) * quantity
+      store = input("loja: ")
+      category = input("categoria: ")
+      duration = input("duração do produto: ")
+      date = datetime.now()
+
+      Purchases.update_database(id , product , quantity , message , price , store , category , duration ,date)
 
     if(menu == 3):
-        Purchases.delete_database()
+        id = int(input("digite o ID do produto que deseja excluir: "))
+        Purchases.delete_database(id)
 
     if(menu == 4):
         Extract.update_money()
