@@ -50,7 +50,8 @@ while True:
         category = input("categoria: ")
         duration = input("duração do produto: ")
         date = datetime.now()
-        print(Purchases.insert_database(product, message, price , store , category , duration , date, quantity))
+        purchase = Purchases(product, message, price, store, category, duration, date, quantity)
+        print(purchase.insert_database())
 
     if(menu == 2):
       id = int(input("digite o ID do produto quue deseja atualizar: "))
@@ -62,7 +63,6 @@ while True:
       category = input("categoria: ")
       duration = input("duração do produto: ")
       date = datetime.now()
-
       Purchases.update_database(id , product , quantity , message , price , store , category , duration ,date)
 
     if(menu == 3):
