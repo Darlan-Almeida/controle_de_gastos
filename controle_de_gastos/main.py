@@ -9,7 +9,6 @@ import os
 
 while True:
     os.system("cls")
-    """
     #apagas as compras parceladas que tiveram o ultimo pagamento agora
     Purchases_parceled.delete_purchases_parceled()
 
@@ -22,20 +21,20 @@ while True:
 
     #conjuntos de condicionais que fazem operações matemáticas, conforme os dados preenchidos nas tabelas do banco de dados, a fim de exibir o saldo
 
-   if(type( purchases_parceled.sum_money_parceled()) != float and type(Purchases.sum_price()) == float):
+    """if(type( Purchases_parceled.sum_money_parceled()) != float and type(Purchases.sum_price()) == float):
         print("SALDO:", Extract.read_database() - Purchases.sum_price())
 
-    if(type( purchases_parceled.sum_money_parceled()) == float and type(Purchases.sum_price()) != float):
+    if(type( Purchases_parceled.sum_money_parceled()) == float and type(Purchases.sum_price()) != float):
         print("SALDO:", Extract.read_database() - Purchases_parceled.sum_money_parceled())
 
-    if(type( purchases_parceled.sum_money_parceled()) == float and type(Purchases.sum_price()) == float):
+    if(type( Purchases_parceled.sum_money_parceled()) == float and type(Purchases.sum_price()) == float):
         print("SALDO:", Extract.read_database() - Purchases_parceled.sum_money_parceled() - Purchases.sum_price())
 
-    if(type( purchases_parceled.sum_money_parceled()) != float and type(Purchases.sum_price()) != float):
-        print("SALDO:", Extract.read_database())"""
+    if(type( Purchases_parceled.sum_money_parceled()) != float and type(Purchases.sum_price()) != float):
+        print("SALDO:", Extract.read_database())
         
 
-    Purchases.read_database()
+    Purchases.read_database()"""
 
 
     menu =  int(input((" 1- Registrar compra à vista \n 2- atualizar dados da compra \n 3- deletar compras \n 4- adicionar dinheiro na carteira \n 5- sacar dinheiro \n 6- adicionar dinheiro na carteira automáticamente \n 7- registrar uma compra parcelada \n Escolha uma opção: ")))
@@ -70,14 +69,21 @@ while True:
         Purchases.delete_database(id)
 
     if(menu == 4):
-        Extract.update_money()
+        money = float(input("digite o valor que você deseja adicionar na carteira: "))
+        extract = Extract(money)
+        extract.update_money()
         
     if(menu == 5):
-        Extract.cashout()
+        money = float(input("digite o valor qufe você deseja sacar da carteira: "))
+        extract = Extract(money)
+        extract.cashout()
 
 
     if(menu == 6):
-        Extract_Scheduled.insert_database()
+        day = int(input("Diigite o dia do mês que você deseja adicionar: "))
+        money = int(input("Diigite o valor que você deseja adicionar: "))
+        extract_scheduled = Extract_Scheduled(money , day)
+        extract_scheduled.insert_database()
 
 
     if(menu == 7):
@@ -93,7 +99,8 @@ while True:
         paidinstallment = 0 
         moneypaid = 0
         if(payment > 0):
-            Purchases_parceled.insert_purchases_parceled()
+            purchase_parceled = Purchases_parceled(product, message, price , store , category , duration , date , quantity, payment , paidinstallment, moneypaid)
+            purchase_parceled.insert_purchases_parceled()
         else:
             print("Essa compra não tem parcela")
 

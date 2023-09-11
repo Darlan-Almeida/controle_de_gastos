@@ -3,22 +3,22 @@ from models.databasemanager import DatabaseManager
 
 class Purchases:
     def __init__(self, product, message, price, store, category, duration, date, quantity):
-        self.__product = product
-        self.__message = message
-        self.__price = price
-        self.__store = store
-        self.__category = category
-        self.__duration = duration
-        self.__date = date
-        self.__quantity = quantity
+        self.product = product
+        self.message = message
+        self.price = price
+        self.store = store
+        self.category = category
+        self.duration = duration
+        self.date = date
+        self.quantity = quantity
 
     # Adicione getters e setters conforme necessário
 
     def insert_database(self):
         query = "INSERT INTO purchases (product, message, price, store, category, duration, date, quantity) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
-        data = (self.__product, self.__message, self.__price, self.__store, self.__category, self.__duration, self.__date, self.__quantity)
+        data = (self.product, self.message, self.price, self.store, self.category, self.duration, self.date, self.quantity)
         db_manager = DatabaseManager()
-        db_manager.execute_query(query, data)
+        db_manager.execute_query_with_data(query, data)
 
     @staticmethod
     def read_database():
@@ -33,7 +33,7 @@ class Purchases:
         query = "UPDATE purchases SET product = %s , message = %s , price= %s , store= %s, category = %s , duration = %s  , date= %s , quantity = %s WHERE id = %s"
         data = (product, message, price, store, category, duration, date, quantity, id)
         db_manager = DatabaseManager()
-        db_manager.execute_query(query, data)
+        db_manager.execute_query_with_data(query, data)
        
 
     @staticmethod
@@ -41,7 +41,7 @@ class Purchases:
         query = "DELETE FROM purchases WHERE id = %s"
         data = (id,)
         db_manager = DatabaseManager()
-        db_manager.execute_query(query, data)
+        db_manager.execute_query_with_data(query, data)
        
 
     @staticmethod
