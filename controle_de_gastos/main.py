@@ -2,19 +2,19 @@ from purchases import  Purchases
 from extract import Extract
 from datetime import datetime , date
 from extract_scheduled import Extract_Scheduled
-from buy_parceled import Buy_parceled
+from purchases_parceled import Purchases_parceled
 
 import os
 
 
 while True:
     os.system("cls")
-
+    """
     #apagas as compras parceladas que tiveram o ultimo pagamento agora
-    Buy_parceled.delete_buy_parceled()
+    Purchases_parceled.delete_purchases_parceled()
 
     #Exibe as compras parceladas
-    print(Buy_parceled.money_parceled(Buy_parceled.read_buy_parceled() , Buy_parceled.count_register_parceled()))
+    print(Purchases_parceled.money_parceled(Purchases_parceled.read_purchases_parceled() , Purchases_parceled.count_register_parceled()))
 
     # adiciona o dinheiro caso o dia cadastrado, que são passados nos parametros, seja hoje
     Extract_Scheduled.add_money_moneyscheduled (Extract.read_database() , Extract_Scheduled.view_date_moneyscheduled() , Extract_Scheduled.count_register_moneyscheduled())
@@ -22,17 +22,17 @@ while True:
 
     #conjuntos de condicionais que fazem operações matemáticas, conforme os dados preenchidos nas tabelas do banco de dados, a fim de exibir o saldo
 
-    if(type( Buy_parceled.sum_money_parceled()) != float and type(Purchases.sum_price()) == float):
+   if(type( purchases_parceled.sum_money_parceled()) != float and type(Purchases.sum_price()) == float):
         print("SALDO:", Extract.read_database() - Purchases.sum_price())
 
-    if(type( Buy_parceled.sum_money_parceled()) == float and type(Purchases.sum_price()) != float):
-        print("SALDO:", Extract.read_database() - Buy_parceled.sum_money_parceled())
+    if(type( purchases_parceled.sum_money_parceled()) == float and type(Purchases.sum_price()) != float):
+        print("SALDO:", Extract.read_database() - Purchases_parceled.sum_money_parceled())
 
-    if(type( Buy_parceled.sum_money_parceled()) == float and type(Purchases.sum_price()) == float):
-        print("SALDO:", Extract.read_database() - Buy_parceled.sum_money_parceled() - Purchases.sum_price())
+    if(type( purchases_parceled.sum_money_parceled()) == float and type(Purchases.sum_price()) == float):
+        print("SALDO:", Extract.read_database() - Purchases_parceled.sum_money_parceled() - Purchases.sum_price())
 
-    if(type( Buy_parceled.sum_money_parceled()) != float and type(Purchases.sum_price()) != float):
-        print("SALDO:", Extract.read_database())
+    if(type( purchases_parceled.sum_money_parceled()) != float and type(Purchases.sum_price()) != float):
+        print("SALDO:", Extract.read_database())"""
         
 
     Purchases.read_database()
@@ -81,7 +81,21 @@ while True:
 
 
     if(menu == 7):
-        Buy_parceled.insert_buy_parceled()
+        product = input("Produto: ")
+        quantity = int(input("quantidade: "))
+        message = input("descrição: ")
+        payment = int(input("total de parcelas: "))
+        price = (float(input("preço unitário: ")) * quantity)
+        store = input("loja: ")
+        category = input("categoria: ")
+        duration = input("duração do produto: ")
+        date = datetime.now()
+        paidinstallment = 0 
+        moneypaid = 0
+        if(payment > 0):
+            Purchases_parceled.insert_purchases_parceled()
+        else:
+            print("Essa compra não tem parcela")
 
 
 

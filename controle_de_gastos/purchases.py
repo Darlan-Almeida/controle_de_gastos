@@ -19,18 +19,12 @@ class Purchases:
         data = (self.__product, self.__message, self.__price, self.__store, self.__category, self.__duration, self.__date, self.__quantity)
         db_manager = DatabaseManager()
         db_manager.execute_query(query, data)
-        db_manager.close_connection()
 
     @staticmethod
     def read_database():
         query = "SELECT * FROM purchases"
         db_manager = DatabaseManager()
-        cursor = db_manager.connection.cursor()
-        cursor.execute(query)
-        results = cursor.fetchall()
-        cursor.close()
-        db_manager.close_connection()
-
+        results = db_manager.return_results(query)
         for result in results:
             print("id: {0} | produto: {1}  | descrição: {2} | preço: {3} | loja: {4} | categoria: {5} |  Duração: {6} | quantidade: {7} |  data: {8}".format(result[0], result[1], result[2], result[3], result[4], result[5], result[6], result[7], result[8]))
 
@@ -40,7 +34,7 @@ class Purchases:
         data = (product, message, price, store, category, duration, date, quantity, id)
         db_manager = DatabaseManager()
         db_manager.execute_query(query, data)
-        db_manager.close_connection()
+       
 
     @staticmethod
     def delete_database(id):
@@ -48,18 +42,13 @@ class Purchases:
         data = (id,)
         db_manager = DatabaseManager()
         db_manager.execute_query(query, data)
-        db_manager.close_connection()
+       
 
     @staticmethod
     def sum_price():
         query = "SELECT SUM(price) AS TotalItemsOrdered FROM purchases"
         db_manager = DatabaseManager()
-        cursor = db_manager.connection.cursor()
-        cursor.execute(query)
-        results = cursor.fetchall()
-        cursor.close()
-        db_manager.close_connection()
-
+        results = db_manager.return_results(query)
         for result in results:
             sum_prices = result[0]
             if sum_prices is not None:
