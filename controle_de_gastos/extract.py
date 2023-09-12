@@ -1,7 +1,7 @@
 from models.databasemanager import DatabaseManager
 from models.config import DB_CONFIG
 
-
+db_manager = DatabaseManager()
 class Extract():
     def __init__(self , money):
        self.money = money
@@ -9,7 +9,7 @@ class Extract():
 
     def read_database():
       query = "SELECT bankroll FROM extract LIMIT 1"
-      db_manager = DatabaseManager()
+      
 
       results = db_manager.return_results(query)
     
@@ -25,7 +25,7 @@ class Extract():
         query = "UPDATE extract SET bankroll = %s  WHERE id = %s"
         data = (update_bankroll , 1)
 
-        db_manager = DatabaseManager()
+        
         db_manager.execute_query_with_data(query, data)
 
         print("dinheiro adicionado")
@@ -37,7 +37,7 @@ class Extract():
         query = "UPDATE extract SET bankroll = %s  WHERE id = %s"
         data = (cashout_bankroll , 1)
         
-        db_manager = DatabaseManager()
+        
         db_manager.execute_query_with_data(query, data)
 
 

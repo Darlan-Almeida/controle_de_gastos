@@ -20,8 +20,8 @@ while True:
 
 
     #conjuntos de condicionais que fazem operações matemáticas, conforme os dados preenchidos nas tabelas do banco de dados, a fim de exibir o saldo
-
-    """if(type( Purchases_parceled.sum_money_parceled()) != float and type(Purchases.sum_price()) == float):
+    
+    if(type( Purchases_parceled.sum_money_parceled()) != float and type(Purchases.sum_price()) == float):
         print("SALDO:", Extract.read_database() - Purchases.sum_price())
 
     if(type( Purchases_parceled.sum_money_parceled()) == float and type(Purchases.sum_price()) != float):
@@ -34,7 +34,7 @@ while True:
         print("SALDO:", Extract.read_database())
         
 
-    Purchases.read_database()"""
+    Purchases.read_database()
 
 
     menu =  int(input((" 1- Registrar compra à vista \n 2- atualizar dados da compra \n 3- deletar compras \n 4- adicionar dinheiro na carteira \n 5- sacar dinheiro \n 6- adicionar dinheiro na carteira automáticamente \n 7- registrar uma compra parcelada \n Escolha uma opção: ")))

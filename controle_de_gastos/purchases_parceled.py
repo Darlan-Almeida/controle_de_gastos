@@ -2,6 +2,9 @@ from models.databasemanager import DatabaseManager
 from purchases import Purchases
 from datetime import datetime , date
 
+
+db_manager = DatabaseManager()
+
 class Purchases_parceled(Purchases):
     def __init__(self , product, message, price , store , category , duration , date , quantity, payment , paidinstallment, moneypaid):
       super().__init__(product, message, price , store , category , duration , date , quantity,)
@@ -12,7 +15,7 @@ class Purchases_parceled(Purchases):
     def insert_purchases_parceled(self):
         query = "INSERT INTO buyparceled (product, message, price , store , category , duration , date , quantity, payment , paidinstallment, moneypaid) VALUES (%s, %s, %s , %s, %s, %s , %s, %s, %s, %s, %s )"
         data = (self.product, self.message, self.price, self.store, self.category, self.duration, self.date, self.quantity, self.__payment, self.__paidinstallment, self.__moneypaid)
-        db_manager = DatabaseManager()
+        
         db_manager.execute_query_with_data(query, data)
         return ("Foi cadastrado o novo produto ")
 
@@ -20,7 +23,7 @@ class Purchases_parceled(Purchases):
   
       query = "SELECT * FROM buyparceled WHERE payment > 0;"
       
-      db_manager = DatabaseManager()
+      
       results = db_manager.return_results(query)
 
 
@@ -32,7 +35,7 @@ class Purchases_parceled(Purchases):
     def count_register_parceled():
       query = "SELECT COUNT(id) FROM buyparceled"
 
-      db_manager = DatabaseManager()
+      
       results = db_manager.return_results(query)
       return results[0][0]
 
@@ -47,7 +50,7 @@ class Purchases_parceled(Purchases):
           paidinstallment = (purchases_parceled[i][10] + 1)        
           id = purchases_parceled[i][0]
           
-          db_manager = DatabaseManager()
+          
                     
           query = "UPDATE buyparceled SET moneypaid = %s , paidinstallment  = %s WHERE id = %s"
           data = (  moneypaid, paidinstallment ,  id)
@@ -59,7 +62,7 @@ class Purchases_parceled(Purchases):
 
       query = "SELECT SUM(moneypaid) AS TotalItemsOrdered FROM buyparceled"
 
-      db_manager = DatabaseManager()
+      
       results = db_manager.return_results(query)
 
       for result in results:
@@ -70,7 +73,5 @@ class Purchases_parceled(Purchases):
       # Onde as parcelas pagas for igual ao total, exclua esse registro, pois todas as parcelas foram pagas
 
       query = "DELETE FROM buyparceled WHERE paidinstallment = payment"
-
-      db_manager = DatabaseManager()
 
       db_manager.execute_query_without_data(query)

@@ -1,7 +1,9 @@
 from models.databasemanager import DatabaseManager
-from models.config import DB_CONFIG
 from datetime import date , datetime
 from extract import Extract
+
+db_manager = DatabaseManager()
+
 
 class Extract_Scheduled(Extract):
     def __init__(self, money , day):
@@ -13,7 +15,6 @@ class Extract_Scheduled(Extract):
         query = "INSERT INTO moneyscheduled (money, day) VALUES (%s, %s)"
         data = (self.money , self.day)
 
-        db_manager = DatabaseManager()
         db_manager.execute_query_with_data(query , data)
 
         print("dinheiro programado adicionado")
@@ -22,16 +23,12 @@ class Extract_Scheduled(Extract):
 
 
       query = "SELECT * FROM moneyscheduled"
-
-      db_manager = DatabaseManager()
       results = db_manager.return_results(query)
 
       return results
 
     def count_register_moneyscheduled():
       query = "SELECT COUNT(money) FROM moneyscheduled"
-
-      db_manager = DatabaseManager()
       results = db_manager.return_results(query)
 
       return results[0][0]
@@ -50,7 +47,7 @@ class Extract_Scheduled(Extract):
           query = "UPDATE extract SET bankroll = %s  WHERE id = %s"
           data = ( add_new_extract , 0)
 
-          db_manager = DatabaseManager()
+
           db_manager.execute_query_with_data(query , data)
           
           return "Dinheiro programado adicionado!"
