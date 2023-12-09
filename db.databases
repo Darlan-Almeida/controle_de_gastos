@@ -1,31 +1,6 @@
-CRIAÇÃO DAS TABELAS NECESSÁRIAS NA INTEGRAÇÃO DO SISTEMA:
-
-
-Create table buyparceled ( id int auto_increment primary key , product varchar(150) 
-, message varchar(150) , price float (10 , 2) , store varchar (150) , category varchar(150) 
-, duration varchar (150), payment int , date date , quantity int , paidinstallment int  , moneypaid float (10 , 2));
-
-
-
-create table extract ( bankroll float (10 , 2 ) , date date , id int primary key);
-
-
-
-create table moneyscheduled ( money float(10,2) , day int , month int );
-
-
-
-
-Create table purchases ( id int auto_increment primary key , product varchar(150) , message varchar(150) , price float (10 , 2)
- , store varchar (150) , category varchar(150) , duration varchar (150), payment int , date date , quantity int);]
-
-
-
-
- Para PostgrreSql
-
- CREATE TABLE buyparceled (
-    id serial PRIMARY KEY,
+CRIAÇÃOCREATE TABLE purchases (
+    id SERIAL PRIMARY KEY,
+    UsuarioID INT,
     product VARCHAR(150),
     message VARCHAR(150),
     price NUMERIC(10, 2),
@@ -35,31 +10,53 @@ Create table purchases ( id int auto_increment primary key , product varchar(150
     payment INT,
     date DATE,
     quantity INT,
-    paidinstallment INT,
-    moneypaid NUMERIC(10, 2)
-);
+    FOREIGN KEY (UsuarioID) REFERENCES USUARIOS(UsuarioID)
+); DAS TABELAS NECESSÁRIAS NA INTEGRAÇÃO DO SISTEMA:
 
-CREATE TABLE extract (
-    bankroll FLOAT,
-    date DATE,
-    id serial PRIMARY KEY
-);
+CREATE TABLE USUARIOS(
+ UsuarioID SERIAL PRIMARY KEY,
+    Nome VARCHAR(50),
+    Email VARCHAR(100)
 
-CREATE TABLE moneyscheduled (
-    money FLOAT,
-    day INT,
-    month INT
-);
+) 
 
-CREATE TABLE purchases (
-    id serial PRIMARY KEY,
+CREATE TABLE buyparceled (
+    id SERIAL PRIMARY KEY,
+    UsuarioID INT,
     product VARCHAR(150),
     message VARCHAR(150),
-    price FLOAT,
+    price NUMERIC(10 , 2),
     store VARCHAR(150),
     category VARCHAR(150),
     duration VARCHAR(150),
     payment INT,
     date DATE,
-    quantity INT
+    quantity INT,
+    paidinstallment INT,
+    moneypaid NUMERIC(10, 2),
+    FOREIGN KEY (UsuarioID) REFERENCES USUARIOS(UsuarioID)
 );
+
+
+
+CREATE TABLE extract (
+    id SERIAL PRIMARY KEY,
+    UsuarioID INT,
+    bankroll NUMERIC(10, 2),
+    date DATE,
+    FOREIGN KEY (UsuarioID) REFERENCES USUARIOS(UsuarioID)
+);
+
+
+
+CREATE TABLE moneyscheduled (
+    UsuarioID INT,
+    money NUMERIC(10, 2),
+    day INT,
+    month INT,
+    FOREIGN KEY (UsuarioID) REFERENCES USUARIOS(UsuarioID)
+);
+
+
+
+

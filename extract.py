@@ -1,44 +1,83 @@
-from models.databasemanager import DatabaseManager
-from models.config import DB_CONFIG
+import pg8000
+from config.configBD import DB_CONFIG
 
-db_manager = DatabaseManager()
+
 class Extract():
-    def __init__(self , money):
-       self.money = money
-
 
     def read_database():
-      query = "SELECT bankroll FROM extract LIMIT 1"
-      
 
-      results = db_manager.return_results(query)
-    
+      connection = pg8000.connect(**DB_CONFIG)
+
+
+      cursor = connection.cursor()
+
+      sql = "SELECT bankroll FROM extract LIMIT 1"
+
+      cursor.execute(sql)
+      results = cursor.fetchall()
+
+      cursor.close()
+      connection.close()
+
       for result in results:
         return result[0]
 
 
 
-    def update_money(self):
-        update_bankroll = self.money + Extract.read_database()
-    
+    def update_money():
+        money = float(input("digite o valor que você deseja adicionar na carteira: "))
+        update_bankroll = money + Extract.read_database()
+        connection = pg8000.connect(**DB_CONFIG)
 
-        query = "UPDATE extract SET bankroll = %s  WHERE id = %s"
+        cursor = connection.cursor()
+
+        sql = "UPDATE extract SET bankroll = %s  WHERE id = %s"
         data = (update_bankroll , 1)
 
-        
-        db_manager.execute_query_with_data(query, data)
+        cursor.execute(sql, data)
+        connection.commit()
+
+
+        cursor.close()
+        connection.close()
 
         print("dinheiro adicionado")
         
-    def cashout(self):
-        
-        cashout_bankroll =  float(Extract.read_database()) - self.money
+    def cashout():
+        money = float(input("digite o valor que você deseja sacar da carteira: "))
+        cashout_bankroll =  float(Extract.read_database()) - money
 
-        query = "UPDATE extract SET bankroll = %s  WHERE id = %s"
+
+        connection = pg8000.connect(**DB_CONFIG)
+
+        cursor = connection.cursor()
+
+        sql = "UPDATE extract SET bankroll = %s  WHERE id = %s"
         data = (cashout_bankroll , 1)
-        
-        
-        db_manager.execute_query_with_data(query, data)
 
+        cursor.execute(sql, data)
+        connection.commit()
+
+
+        cursor.close()
+        connection.close()
 
         print("dinheiro saquado")
+
+    def add_money_scheduled(money):
+      
+        connection = pg8000.connect(**DB_CONFIG)
+
+        cursor = connection.cursor()
+
+        sql = "UPDATE extract2 SET bankroll = %s  WHERE id = %s"
+        data = (money , 0)
+
+        cursor.execute(sql, data)
+        connection.commit()
+
+
+        cursor.close()
+        connection.close()
+
+        print("dinheiro adicionado")
